@@ -5,21 +5,29 @@ from typing import ClassVar
 import requests
 from requests_oauthlib import OAuth1
 
+from tuffer import load_config
 from tuffer.integrations.twitter.exceptions import TwitterRequestTokenException
 from tuffer.integrations.twitter.exceptions import TwitterAccessTokenException
+
+config_data = load_config()
+twitter_config = config_data.get("twitter", dict())
 
 
 @dataclass
 class Twitter:
     BASE_URL: ClassVar[str] = "https://api.twitter.com"
-    CONSUMER_KEY: ClassVar[str] = "3A7UZpneAimbZ1pLSg38X21uE"
-    CONSUMER_SECRET: ClassVar[str] = (
-        "Tn0n295wLPu3EqUdZhVO6HrNwRhsgUqxt2kjMvFObMXeHaLVPU"
-    )
+    CONSUMER_KEY: ClassVar[str] = None
+    CONSUMER_KEY_SECRET: ClassVar[str] = None
     oauth_token: str = None
     oauth_token_secret: str = None
 
     def __post_init__(self):
+        app_config = twitter_config.get("app")
+        assert app_config is not None
+
+        self.CONSUMER_KEY = app_config["consumer_key"]
+        self.CONSUMER_KEY_SECRET = app_config["consumer_key_secret"]
+
         if self.oauth_token is None:
             self.request_token()
             pin_code = self.authorize()
@@ -30,7 +38,7 @@ class Twitter:
         use_pin_based_auth = "oob"
         auth = OAuth1(
             client_key=self.CONSUMER_KEY,
-            client_secret=self.CONSUMER_SECRET,
+            client_secret=self.CONSUMER_KEY_SECRET,
             callback_uri=use_pin_based_auth,
             signature_method="HMAC-SHA1",
         )
