@@ -40,6 +40,7 @@ def tuffer(ctx: click.Context, content_dir: click.Path = None):
     if content_dir is None:
         content_dir = "content"
     config["content_dir"] = content_dir
+    config.save()
     try_init_content_dir(content_dir)
 
     click.echo(
