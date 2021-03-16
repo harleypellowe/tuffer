@@ -8,7 +8,7 @@ from tuffer.commands.pull import pull
 from tuffer.commands.push import push
 from tuffer.commands.draft import draft
 from tuffer.commands.publish import publish
-from tuffer.commands.platform import platform
+from tuffer.commands.integration import integration
 from tuffer.commands.schedule import schedule
 
 
@@ -54,5 +54,5 @@ tuffer.add_command(pull)
 tuffer.add_command(push)
 tuffer.add_command(draft)
 tuffer.add_command(publish)
-tuffer.add_command(platform)
+tuffer.add_command(integration)
 tuffer.add_command(schedule)
