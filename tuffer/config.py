@@ -1,7 +1,6 @@
 import os
 from typing import ClassVar
 from dataclasses import dataclass
-from dataclasses import field
 
 import yaml
 
@@ -19,7 +18,8 @@ class Config(dict):
             return None
 
         with open(self.CONFIG_FILENAME, "r") as config_file:
-            self.update(yaml.load(config_file, Loader=yaml.SafeLoader))
+            data = yaml.load(config_file, Loader=yaml.SafeLoader)
+            self.update(data)
 
     def save(self) -> None:
         with open(self.CONFIG_FILENAME, "w") as config_file:
