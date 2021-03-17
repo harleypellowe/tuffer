@@ -4,7 +4,7 @@ from click.testing import CliRunner
 from pytest_mock import MockerFixture
 
 from tuffer import config
-from tuffer.commands.integration import integration
+from tuffer.commands.integration import integrations
 from tuffer.commands.integration import view
 from tuffer.commands.integration import remove
 
@@ -46,7 +46,7 @@ class TestIntegration:
     runner: CliRunner = CliRunner()
 
     def test_integration(self):
-        result = self.runner.invoke(integration)
+        result = self.runner.invoke(integrations)
         assert result.exit_code == 0
         assert "Manage" in result.output
 

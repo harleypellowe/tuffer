@@ -8,7 +8,7 @@ from tuffer import config
 
 @click.group(invoke_without_command=True)
 @click.pass_context
-def integration(ctx: click.Context):
+def integrations(ctx: click.Context):
     """Manage integration credentials"""
 
     if ctx.invoked_subcommand:
@@ -17,7 +17,7 @@ def integration(ctx: click.Context):
     click.echo("Manage integration credentials.")
 
 
-@integration.command()
+@integrations.command()
 @click.option(
     "--integration",
     type=str,
@@ -44,7 +44,7 @@ def view(integration: Optional[List[str]], username: Optional[List[str]]):
                 print(f"{key}: {value}")
 
 
-@integration.command()
+@integrations.command()
 @click.option(
     "--integration",
     type=str,
