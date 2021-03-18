@@ -26,5 +26,5 @@ jobs:
         args: "--check ."
     - name: Test with pytest
       run: |
-        pip install pytest
+        pip install pytest pytest-mock
         pytest
