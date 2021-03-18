@@ -23,7 +23,7 @@ jobs:
     - name: Lint with black
       uses: psf/black@stable
       with:
-        args: "--exclude \.venv --line-length 80 --check ."
+        args: "--check ."
     - name: Test with pytest
       run: |
         pip install pytest
