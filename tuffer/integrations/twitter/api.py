@@ -63,7 +63,9 @@ class Twitter:
 
     def request_access_token(self, oauth_verifier: str):
         url = f"{self.BASE_URL}/oauth/access_token"
-        params = dict(oauth_token=self.oauth_token, oauth_verifier=oauth_verifier)
+        params = dict(
+            oauth_token=self.oauth_token, oauth_verifier=oauth_verifier
+        )
         response = self.make_request(method="GET", url=url, params=params)
         if response.status_code != 200:
             return TwitterAccessTokenException
@@ -91,5 +93,10 @@ class Twitter:
         params: dict = None,
     ) -> requests.Response:
         return requests.request(
-            method=method, url=url, auth=auth, data=data, headers=headers, params=params
+            method=method,
+            url=url,
+            auth=auth,
+            data=data,
+            headers=headers,
+            params=params,
         )
