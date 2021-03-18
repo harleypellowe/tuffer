@@ -5,6 +5,19 @@ import click
 
 from tuffer import config
 
+integration_option = click.option(
+    "--integration",
+    type=str,
+    multiple=True,
+    help="The integration(s) to apply this command to.",
+)
+username_option = click.option(
+    "--username",
+    type=str,
+    multiple=True,
+    help="The username(s) to apply this command to.",
+)
+
 
 @click.group(invoke_without_command=True)
 @click.pass_context
@@ -18,18 +31,8 @@ def integrations(ctx: click.Context):
 
 
 @integrations.command()
-@click.option(
-    "--integration",
-    type=str,
-    multiple=True,
-    help="The integration to filter results by.",
-)
-@click.option(
-    "--username",
-    type=str,
-    multiple=True,
-    help="The username to filter results by.",
-)
+@integration_option
+@username_option
 def view(integration: Optional[List[str]], username: Optional[List[str]]):
     """List connected integrations"""
 
@@ -45,18 +48,8 @@ def view(integration: Optional[List[str]], username: Optional[List[str]]):
 
 
 @integrations.command()
-@click.option(
-    "--integration",
-    type=str,
-    multiple=True,
-    help="Remove all integrations of this type.",
-)
-@click.option(
-    "--username",
-    type=str,
-    multiple=True,
-    help="Remove the integration associated with this username.",
-)
+@integration_option
+@username_option
 def remove(integration: Optional[List[str]], username: Optional[List[str]]):
     """Remove connected integrations"""
 
@@ -64,19 +57,39 @@ def remove(integration: Optional[List[str]], username: Optional[List[str]]):
     if not integration and not username:
         config["integrations"] = dict()
 
-    platforms = config.get("integrations")
-    for platform, platform_data in platforms.items():
-
-        # Delete all accounts for specified integrations.
-        if integration and platform in integration:
+    # Delete ALL accounts for SPECIFIC integrations.
+    if integration:
+        platforms_to_delete = [
+            x for x in config["integrations"].keys() if x in integration
+        ]
+        for platform in platforms_to_delete:
             del config["integrations"][platform]
-            continue
 
-        # Delete accounts with specific usernames.
-        temp_accounts = list()
-        for account in platform_data["accounts"]:
-            if username and account["username"] in username:
-                continue
-            temp_accounts.append(account)
-        platform_data["accounts"] = temp_accounts
+    # Delete SPECIFIC accounts.
+    if username:
+        platforms = config.get("integrations")
+        for platform, platform_data in platforms.items():
+            accounts = platform_data["accounts"]
+            accounts_to_keep = [
+                x for x in accounts if x["username"] not in username
+            ]
+            platform_data["accounts"] = accounts_to_keep
     config.save()
+
+
+@integrations.command()
+@click.argument("integration", type=str)
+def add(integration: str):
+    """Add an integration"""
+
+    integration_data = dict()
+    if integration == "twitter":
+        integration_data["username"] = input("Username: ")
+        integration_data["oauth_token"] = input("OAuth token: ")
+        integration_data["oauth_token_secret"] = input("OAuth token secret: ")
+
+    if "integrations" not in config.keys():
+        config["integrations"] = dict()
+    if "twitter" not in config["integrations"]:
+        config["integrations"]["twitter"] = list()
+    config["integrations"]["twitter"].append(integration_data)
