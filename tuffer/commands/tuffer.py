@@ -36,9 +36,7 @@ def tuffer(ctx: click.Context, content_dir: click.Path = None):
     if ctx.invoked_subcommand:
         return
 
-    content_dir = content_dir or config.get("content_dir")
-    if content_dir is None:
-        content_dir = "content"
+    content_dir = content_dir or config.get("content_dir") or "content"
     config["content_dir"] = content_dir
     config.save()
     try_init_content_dir(content_dir)

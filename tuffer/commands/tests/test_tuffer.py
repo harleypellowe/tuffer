@@ -26,7 +26,6 @@ class TestTuffer:
         for path in paths:
             assert os.path.exists(path)
 
-        assert result.exit_code == 0
         assert "Welcome" in result.output
 
         from tuffer import config
@@ -43,7 +42,6 @@ class TestTuffer:
         for path in paths:
             assert os.path.exists(path)
 
-        assert result.exit_code == 0
         assert "Welcome" in result.output
 
         from tuffer import config
@@ -63,7 +61,6 @@ class TestTuffer:
         for path in paths:
             assert os.path.exists(path)
 
-        assert result.exit_code == 0
         assert "Welcome" in result.output
 
         from tuffer import config
