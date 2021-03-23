@@ -1,57 +1,14 @@
 import json
 
-import pytest
-import yaml
 from click.testing import CliRunner
 from pytest_mock import MockerFixture
 
-from tuffer import config
 from tuffer.commands.integration import integrations
 from tuffer.commands.integration import view
 from tuffer.commands.integration import remove
 from tuffer.commands.integration import add
-
-
-def create_config_obj(config_yaml: str):
-    config_data = yaml.load(config_yaml, Loader=yaml.SafeLoader) or {}
-    config.clear()
-    config.update(config_data)
-
-    def save():
-        return True
-
-    config.save = save
-
-    return config
-
-
-@pytest.fixture
-def mock_filled_config():
-    config_yaml = """
-integrations:
-  twitter:
-    accounts:
-      - oauth_token: xxx
-        oauth_token_secret: xxx
-        username: Twitter_Alpha
-      - oauth_token: xxx
-        oauth_token_secret: xxx
-        username: Twitter_Beta
-    app:
-      consumer_key: xxx
-      consumer_key_secret: xxx
-  linkedin:
-    accounts:
-      - username: LinkedIn_Alpha
-        password: xxx
-
-"""
-    return create_config_obj(config_yaml)
-
-
-@pytest.fixture
-def mock_empty_config():
-    return create_config_obj("")
+from tuffer.commands.tests.fixtures import mock_filled_config
+from tuffer.commands.tests.fixtures import mock_empty_config
 
 
 class TestIntegration:
