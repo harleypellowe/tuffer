@@ -14,6 +14,7 @@ setup(
         "requests",
         "requests-oauthlib",
         "click",
+        "arrow",
     ],
     entry_points={
         "console_scripts": ["tuffer = tuffer.commands.tuffer:tuffer"]
