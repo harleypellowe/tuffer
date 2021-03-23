@@ -4,19 +4,8 @@ from typing import List
 import click
 
 from tuffer import config
-
-integration_option = click.option(
-    "--integration",
-    type=str,
-    multiple=True,
-    help="The integration(s) to apply this command to.",
-)
-username_option = click.option(
-    "--username",
-    type=str,
-    multiple=True,
-    help="The username(s) to apply this command to.",
-)
+from tuffer.ui.parameter.common import integration_option
+from tuffer.ui.parameter.common import username_option
 
 
 @click.group(invoke_without_command=True)
