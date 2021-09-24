@@ -1,6 +1,8 @@
+.DS_Store
 config.yaml
 venv/
 .idea/
 **/*.egg-info/
 **/.pytest_cache
 **/__pycache__
+content

@@ -12,15 +12,10 @@ from tuffer.commands.integration import integrations
 from tuffer.commands.schedule import schedule
 
 
-def try_init_content_dir(content_dir: click.Path):
-    for folder in [
-        content_dir,
-        f"{content_dir}/drafts",
-        f"{content_dir}/scheduled",
-        f"{content_dir}/published",
-    ]:
-        if not os.path.exists(folder):
-            os.mkdir(folder)
+def try_init_content_dir(content_dir: str):
+    for folder in ["drafts", "scheduled", "published"]:
+        print(os.path.join(content_dir, folder))
+        os.makedirs(os.path.join(content_dir, folder), exist_ok=True)
 
 
 @click.group(invoke_without_command=True)
